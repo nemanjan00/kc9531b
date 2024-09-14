@@ -8,7 +8,7 @@ const device = kc9531b(serialport);
 device.getTemperature().then(temperature => {
 	console.log(temperature);
 
-	device.getTemperature().then(temperature => {
+	device.getFrequency().then(temperature => {
 		console.log(temperature);
-	});
+	}).catch(console.error);
 });

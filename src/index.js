@@ -12,6 +12,14 @@ module.exports = (socket) => {
 			});
 		},
 
+		getFrequency: () => {
+			const data = Buffer.from([0xf7, 0xf7, 0xf7]);
+
+			return device.executeCommand(data).then(response => {
+				return response.readUInt32LE();
+			});
+		},
+
 		close: () => {
 			device.close();
 		}
