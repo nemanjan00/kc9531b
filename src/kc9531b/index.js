@@ -26,7 +26,15 @@ module.exports = (socket) => {
 		},
 
 		generateCode: () => {
+			if(Object.keys(device._handlers) === 256) {
+				throw new Error("Too many commands pending");
+			}
+
 			const code = Math.floor(Math.random() * 255); // ID of specific task
+
+			if(device._handlers[code]) {
+				return device.generateCode();
+			}
 
 			return code;
 		},
@@ -129,10 +137,10 @@ module.exports = (socket) => {
 
 				device._remainder = fullData.slice(5 + size + 2);
 
+				device._state = "init";
+
 				return;
 			}
-
-			console.log(data);
 		},
 
 		_cc: (payload) => {
