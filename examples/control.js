@@ -7,10 +7,16 @@ const device = kc9531b(serialport);
 
 device.getDeviceModel().then(console.log);
 
+setInterval(() => {
+	device.getPowerdBm().then(power => {
+		console.log("Power: " + power);
+	});
+}, 100);
+
 device.getTemperature().then(temperature => {
 	console.log(temperature);
 
-	device.setFrequency(300001337).then(() => {
+	device.setFrequency(300000000).then(() => {
 		device.getFrequency().then(frequency => {
 			console.log(frequency);
 		}).catch(console.error);
