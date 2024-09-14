@@ -12,6 +12,15 @@ module.exports = (socket) => {
 			});
 		},
 
+		setFrequency: (frequency) => {
+			const command = Buffer.from([0xf8]);
+			const frequencyRepresentation = Buffer.alloc(4);
+
+			frequencyRepresentation.writeUInt32LE(frequency);
+
+			return device.executeCommand(Buffer.concat([command, frequencyRepresentation]));
+		},
+
 		getFrequency: () => {
 			const data = Buffer.from([0xf7, 0xf7, 0xf7]);
 
