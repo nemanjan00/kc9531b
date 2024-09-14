@@ -1,5 +1,3 @@
-const wrapper = require("queue-promised").wrapper;
-
 const incomingMagicByte = 0xff;
 const outgoingMagicByte = 0xfe;
 
@@ -8,12 +6,27 @@ const protocolVersion = 0x01;
 module.exports = (socket) => {
 	const device = {
 		_handlers: {},
+		_running: false,
+		_queue: [],
 
-		executeCommand: wrapper((data) => {
-			const code = device.generateCode();
-			const command = device.generateCommand(data, code);
+		_sendCommand: () => {
+			if(device._running) {
+				return;
+			}
+
+			const command = device._queue.shift();
+
+			if(command == undefined) {
+				return;
+			}
 
 			socket.write(command);
+			device._running = true;
+		},
+
+		executeCommand: (data) => {
+			const code = device.generateCode();
+			const command = device.generateCommand(data, code);
 
 			const handler = {};
 
@@ -24,8 +37,12 @@ module.exports = (socket) => {
 
 			device._handlers[code] = handler;
 
+			device._queue.push(command);
+
+			device._sendCommand();
+
 			return promise;
-		}, 1),
+		},
 
 		generateCode: () => {
 			if(Object.keys(device._handlers) === 256) {
@@ -140,6 +157,9 @@ module.exports = (socket) => {
 				device._remainder = fullData.slice(5 + size + 2);
 
 				device._state = "init";
+
+				device._running = false;
+				device._sendCommand();
 
 				return;
 			}
