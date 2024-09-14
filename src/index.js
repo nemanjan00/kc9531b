@@ -37,6 +37,14 @@ module.exports = (socket) => {
 			});
 		},
 
+		getPowerdBm: () => {
+			const data = Buffer.from([0x31, 0x31, 0x31]);
+
+			return device.executeCommand(data).then(response => {
+				return response.readFloatLE();
+			});
+		},
+
 		close: () => {
 			device.close();
 		}
