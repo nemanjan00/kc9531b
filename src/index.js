@@ -4,6 +4,14 @@ module.exports = (socket) => {
 	const device = kc9531(socket);
 
 	const control = {
+		getDeviceModel: () => {
+			const data = Buffer.from([0xfb, 0xfb, 0xfb]);
+
+			return device.executeCommand(data).then(response => {
+				return response.toString("utf8");
+			});
+		},
+
 		getTemperature: () => {
 			const data = Buffer.from([0x33, 0x33, 0x33]);
 

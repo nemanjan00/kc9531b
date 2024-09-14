@@ -5,6 +5,8 @@ const serialport = new SerialPort({ path: '/dev/ttyUSB0', baudRate: 115200 });
 
 const device = kc9531b(serialport);
 
+device.getDeviceModel().then(console.log);
+
 device.getTemperature().then(temperature => {
 	console.log(temperature);
 

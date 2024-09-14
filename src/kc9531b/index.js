@@ -1,3 +1,5 @@
+const wrapper = require("queue-promised").wrapper;
+
 const incomingMagicByte = 0xff;
 const outgoingMagicByte = 0xfe;
 
@@ -7,7 +9,7 @@ module.exports = (socket) => {
 	const device = {
 		_handlers: {},
 
-		executeCommand: (data) => {
+		executeCommand: wrapper((data) => {
 			const code = device.generateCode();
 			const command = device.generateCommand(data, code);
 
@@ -23,7 +25,7 @@ module.exports = (socket) => {
 			device._handlers[code] = handler;
 
 			return promise;
-		},
+		}, 1),
 
 		generateCode: () => {
 			if(Object.keys(device._handlers) === 256) {
