@@ -12,6 +12,39 @@ module.exports = (socket) => {
 			});
 		},
 
+		getParameters: () => {
+			const data = Buffer.from([0xfd, 0xfd, 0xfd]);
+
+			return device.executeCommand(data).then(response => {
+				const params = {};
+
+				const modes = {
+					0x00: "PEAK",
+					0x01: "MEAN",
+					0x02: "RMS"
+				};
+
+				const baudRate = {
+					0x00: 2400,
+					0x01: 4800,
+					0x02: 9600,
+					0x03: 14400,
+					0x04: 19200,
+					0x05: 38400,
+					0x06: 56000,
+					0x07: 57600
+				};
+
+				params.mode = modes[response[1]];
+				params.baudRate = baudRate[response[2]];
+				params.RS485ID = response[4];
+
+				console.log(response);
+
+				return params;
+			});
+		},
+
 		getTemperature: () => {
 			const data = Buffer.from([0x33, 0x33, 0x33]);
 
