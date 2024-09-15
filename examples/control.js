@@ -28,3 +28,11 @@ device.getTemperature().then(temperature => {
 device.getParameters().then(params => {
 	console.log(params);
 });
+
+device.getHardwareVersion().then(params => {
+	console.log("Hardware version: " + params);
+});
+
+device.getSoftwareVersion().then(params => {
+	console.log("Software version: " + params);
+});

@@ -86,6 +86,22 @@ module.exports = (socket) => {
 			});
 		},
 
+		getHardwareVersion: () => {
+			const data = Buffer.from([0xfa, 0xfa, 0xfa]);
+
+			return device.executeCommand(data).then(response => {
+				return response.toString("utf8");
+			});
+		},
+
+		getSoftwareVersion: () => {
+			const data = Buffer.from([0xf9, 0xf9, 0xf9]);
+
+			return device.executeCommand(data).then(response => {
+				return response.toString("utf8");
+			});
+		},
+
 		close: () => {
 			device.close();
 		}
