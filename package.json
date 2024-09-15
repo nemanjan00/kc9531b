@@ -1,6 +1,6 @@
 {
   "name": "kc9531b",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "DeepAce kc9531b control lib in JS",
   "main": "index.js",
   "repository": "git@github.com:nemanjan00/kc9531b.git",
