@@ -78,6 +78,14 @@ module.exports = (socket) => {
 			});
 		},
 
+		getPowermW: () => {
+			const data = Buffer.from([0x32, 0x32, 0x32]);
+
+			return device.executeCommand(data).then(response => {
+				return response.readFloatLE();
+			});
+		},
+
 		close: () => {
 			device.close();
 		}

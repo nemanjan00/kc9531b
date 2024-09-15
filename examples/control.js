@@ -11,6 +11,10 @@ device.getPowerdBm().then(power => {
 	console.log("Power: " + power + "dBm");
 });
 
+device.getPowermW().then(power => {
+	console.log("Power: " + power + "mW");
+});
+
 device.setFrequency(300000000).then(() => {
 	device.getFrequency().then(frequency => {
 		console.log("Frequency: " + (frequency / 1000000) + "MHz");
